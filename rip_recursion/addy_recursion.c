@@ -28,7 +28,7 @@ int main(void)	/* 0x8001149 */
    	*/
 	asm volatile("1: lea 1b(%%rip), %0;" : "=a"(rip));	/* 0x8001155 */
 	printf("RIP: 0x%lx\n", rip - 12);
-	uint64_t (*mainptr)() = (uint64_t (*)())rip;
+	uint64_t (*mainptr)() = (uint64_t (*)())rip - 12;
 	mainptr();
 	return 0;
 }
