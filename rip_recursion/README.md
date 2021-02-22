@@ -19,7 +19,7 @@ gdbenv:
         20                        printf("RIP: 0x%lx\n", rip - 12);
         (gdb) n
         RIP: 0x8001149
-        21                        uint64_t (*mainptr)() = (uint64_t (*)())rip;
+        21                        uint64_t (*mainptr)() = (uint64_t (*)())rip - 12;
         (gdb) p/x &main
         $1 = 0x8001149
         (gdb)
