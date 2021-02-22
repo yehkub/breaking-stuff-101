@@ -2,7 +2,7 @@
 
 /* Check if our kernel version is newer than 5.9.0 */
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5, 9, 0)
-#error "nodeWD requires Linux Kernel 5.9.0 or newer"
+#error "GodMode Device requires Linux Kernel 5.9.0 or newer"
 #endif
 
 #include "k_gmdev.h"
