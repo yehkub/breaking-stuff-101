@@ -184,7 +184,7 @@ procflag_t read_proc_sigflag(pid_t *procid) {
     return TASK_INVALID;
 }
 
-/* Assign GodMode - NetLink comm passes Central Node's PID as (pid_t) pid argument*/
+/* Assign GodMode */
 int op_assign_gmode(pid_t *pid) {
     struct task_struct *task;
     
