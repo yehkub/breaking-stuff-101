@@ -16,12 +16,7 @@
 #include <linux/fs.h>
 #include <linux/delay.h>                                                    /* msleep() */
 #include <linux/device.h>                                                   /* cdev mgmt */
-/*
-#include <linux/uaccess.h>
-#include <linux/rcupdate.h>
-#include <linux/sched/signal.h>
-#include <net/net_namespace.h>
-*/
+
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("yehkub");
 MODULE_INFO(intree, "Y");
