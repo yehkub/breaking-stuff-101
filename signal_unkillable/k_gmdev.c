@@ -169,14 +169,12 @@ procflag_t read_proc_sigflag(pid_t *procid) {
     char str_flagdefault[] = "FLAG_DEFAULT";
     char str_sigunkillable[] = "SIGNAL_UNKILLABLE";
 
-    struct task_struct *task;
-    task = NULL;        /* iSo c90 fOrbIdS mIxeD dEclArs n cOdE */
+    struct task_struct *task = NULL;
 
     task = pid_task(find_get_pid(*procid), PIDTYPE_PID);
 
-    str_flagptr = task->signal->flags ? str_sigunkillable : str_flagdefault;
-
     if (task) {
+        str_flagptr = task->signal->flags ? str_sigunkillable : str_flagdefault;
         printk(KERN_INFO "[gmDev]: Task flags for PID: %d - %s (0x%x | %u)\n", *procid, str_flagptr, task->signal->flags, task->signal->flags);
         return task->signal->flags;
     }
@@ -186,11 +184,9 @@ procflag_t read_proc_sigflag(pid_t *procid) {
 
 /* Assign GodMode */
 int op_assign_gmode(pid_t *pid) {
-    struct task_struct *task;
+    struct task_struct *task = NULL;
     
     if (*pid < 1) { return EXIT_FAILURE; }
-    
-    task = NULL;
 
     task = pid_task(find_get_pid(*pid), PIDTYPE_PID);
 
@@ -207,12 +203,9 @@ int op_assign_gmode(pid_t *pid) {
 
 /* Revoke GodMode */
 int op_revoke_gmode(pid_t *pid) {
-    struct task_struct *task;
+    struct task_struct *task = NULL;
     
     if (*pid < 1) { return EXIT_FAILURE; }
-    
-    task = NULL;
-
 
     task = pid_task(find_get_pid(*pid), PIDTYPE_PID);
 
@@ -228,14 +221,30 @@ int op_revoke_gmode(pid_t *pid) {
 }
 
 static int exec_operation(pid_t *procid) {
+    procflag_t cpflags;
     unsigned int rtcode = EXIT_SUCCESS;
 
     if (procid == NULL) { return EXIT_FAILURE; }
     
-    if (read_proc_sigflag(procid) != SIGNAL_UNKILLABLE) {
-        rtcode = op_assign_gmode(procid);
-    } else {
-        rtcode = op_revoke_gmode(procid);
+    cpflags = read_proc_sigflag(procid);
+
+    switch (cpflags) {
+        case FLAG_DEFAULT:
+            rtcode = op_assign_gmode(procid);
+            break;
+        
+        case SIGNAL_UNKILLABLE:
+            rtcode = op_revoke_gmode(procid);
+            break;
+
+        case TASK_INVALID:
+            printk(KERN_INFO "[gmDev]: No such process: %d", *procid);
+            rtcode = EXIT_FAILURE;
+            break;
+    
+        default:
+            rtcode = EXIT_FAILURE;
+            break;
     }
 
     return rtcode;
