@@ -25,7 +25,7 @@ int main(void) {
 	int y = 2;
 	int eax_val = x + y;
 	
-	unsigned char (*mainptr)() = main;		/* we could set this directly to <main+0x21>, but i needed <main> address, for other things that i removed from here.. */
+	unsigned char (*mainptr)() = main;		/* we could set this directly to <main+0x21>, but it's less confusing than passing <main-0x21> to mprotect().. */
 	unsigned char *xptr = *mainptr + 0x21;	        /* points to {0x01}[0xd0] 'add eax, edx' , we're gonna change this to: {0x01}[0xc0] 'add eax, eax' */
 	
 	unlock_text_segment(mainptr);			/* unlock text segment */
